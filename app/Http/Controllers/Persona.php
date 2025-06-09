@@ -72,8 +72,8 @@ class Persona extends Controller
                 'obra_social_id'=> $planId,
                 'plan_id'=> $personaPlanId,
                 'email' => $persona['email'],
-                'contacto_telefono' => $persona['telefono'],
-                'contacto_telefono_2' => $persona['celular'],
+                'contacto_telefono' => $persona['celular'],
+                'contacto_telefono_2' => $persona['telefono'],
             ];
 
             return response()->json([$transformedData]);

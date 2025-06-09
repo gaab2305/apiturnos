@@ -10,40 +10,93 @@ use App\Models\Persona;
 
 class  CrearPersona extends Controller
 {
-    
-public function nuevaPersona($item, $resultado2 = [])
-{
-    // Armamos el payload con la estructura requerida
-    $payload = [
-        'data' => [
-            'attributes' => [
-                'id' => $item['id'],
-                'nombres' => $item['attributes']['nombres'],
-                'apellidos' => $item['attributes']['apellidos'],
-                'documento' => $item['attributes']['documento'],
-                'sexo' => $item['attributes']['sexo'],
-                'fechaNacimiento' => $item['attributes']['fechaNacimiento'],
-                'celular' => $item['attributes']['celular'],
-                'email' => $item['attributes']['email'],
-                'idObraSocial' => $resultado2['idObraSocial'] ?? null,
-                'obraSocial' => $resultado2['obraSocial'] ?? null,
+
+    public function nuevaPersona(Request $request)
+    {
+        $item = $request->all();
+
+        $attributes = $item['data']['attributes'];
+
+        $payload = [
+            'data' => [
+                'attributes' => [
+                    'hcCarpeta' => null,
+                    'nombres' => $attributes['nombres'],
+                    'apellidos' => $attributes['apellidos'],
+                    'nacimiento' => $attributes['nacimiento'],
+                    'tipoDocumento' => 1,
+                    'documento' => $attributes['documento'],
+                    'cuil' => '',
+                    'nacionalidad' => 1,
+                    'generoDocumento' => strtolower($attributes['sexo']),
+                    'grupoSanguineo' => 1,
+                    'estadoCivil' => 2,
+                    'sexo' => strtolower($attributes['sexo']),
+                    'incapacidad' => false,
+                    'cronico' => false,
+                    'celulares' => [
+                        [
+                            "paisCelularSelected" => [
+                                "attributes" => [
+                                    "codigo" => "AR"
+                                ]
+                            ],
+                            "codigoCelular" => $attributes['celulares']['codigoCelular'],
+                            "numCelular" => $attributes['celulares']['numCelular']
+                        ]
+                    ],
+                    'emailsGmail' => [
+                        [
+                            'emailGmail' => ''
+                        ]
+                    ],
+                    'email' => $attributes['email'] ?? '',
+                    'observacion' => '',
+                    'calle' => 'Calle',
+                    'numero' => '123',
+                    'piso' => '',
+                    'depto' => '',
+                    'barrio' => null,
+                    'ciudad' => null,
+                    'partido' => null,
+                    'provincia' => null,
+                    'pais' => 1,
+                    'notaAuditor' => '',
+                    'empadronamiento' => null,
+                    'noAceptaDonacion' => false,
+                    'educacion' => [
+                        'escuelas' => '',
+                        'observaciones' => '',
+                        'aniosAprobados' => '',
+                        'problemasInstitucion' => '',
+                        'nivelInstruccion' => null
+                    ],
+                    'trabajo' => [
+                        'empleadorid' => null,
+                        'observacion' => '',
+                        'horasFueraCasa' => '',
+                        'trabajoRemunerado' => 0,
+                        'horarioTrabajo' => 0,
+                        'tipoOcupacion' => 0,
+                        'trabajoLegal' => 0,
+                        'trabajoInsalubre' => 0,
+                        'edadInicio' => ''
+                    ]
+                ]
             ]
-        ]
-    ];
+        ];
 
-    // Enviar la solicitud HTTP POST
-    $response = Http::timeout(60)->withBasicAuth(env('usernamealephoo'), env('userpw'))
-        ->post('https://universitario.alephoo.com/api/v3/admin/personas', $payload);
+        $response = Http::timeout(60)->withBasicAuth(env('usernamealephoo'), env('userpw'))
+            ->post('https://universitario.alephoo.com/api/v3/admin/personas', $payload);
 
-    // Retornar la respuesta o manejar errores
-    if ($response->successful()) {
-        return response()->json(['mensaje' => 'Persona enviada con éxito', 'respuesta' => $response->json()], 200);
-    } else {
-        return response()->json([
-            'mensaje' => 'Error al enviar persona',
-            'status' => $response->status(),
-            'error' => $response->json()
-        ], $response->status());
+        if ($response->successful()) {
+            return response()->json(['mensaje' => 'Persona enviada con éxito', 'respuesta' => $response->json()], 200);
+        } else {
+            return response()->json([
+                'mensaje' => 'Error al enviar persona',
+                'status' => $response->status(),
+                'error' => $response->json()
+            ], $response->status());
+        }
     }
-}
 }

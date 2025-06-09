@@ -20,3 +20,8 @@ Route::get('/v1/profesionales/{IDespecialidad}' , [Profesionales::class, 'profes
 Route::get('/v1/turnos/{IDprofesional?}/{IDespecialidad?}', [Turnos::class, 'turno']);
 Route::post('/v1/crear/turno', [CrearTurno::class, 'nuevoturno']);
 Route::post('/v1/crear/persona', [CrearPersona::class, 'nuevapersona']);
+Route::middleware('api.key')->group(function () {
+    Route::get('/test', function () {
+        return response()->json(['mensaje' => 'Acceso autorizado']);
+    });
+});
