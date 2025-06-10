@@ -61,6 +61,17 @@ class  CrearPersona extends Controller
                     'partido' => null,
                     'provincia' => null,
                     'pais' => 1,
+                    'coberturaMedica'=> [
+                
+                    "ppd"=> "false",
+                    "obraSocialSelected"=> [
+                        "id"=> $attributes ['id'],
+                    ],
+                    /*"planSelected"=> [
+                        "id"=> 1,
+                    ]*/
+                
+                    ],
                     'notaAuditor' => '',
                     'empadronamiento' => null,
                     'noAceptaDonacion' => false,
