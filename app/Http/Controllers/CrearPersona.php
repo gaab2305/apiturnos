@@ -26,12 +26,12 @@ class  CrearPersona extends Controller
                     'nacimiento' => $attributes['nacimiento'],
                     'tipoDocumento' => 1,
                     'documento' => $attributes['documento'],
-                    'cuil' => '',
+                    'cuil' => "",
                     'nacionalidad' => 1,
-                    'generoDocumento' => strtolower($attributes['sexo']),
+                    'generoDocumento' => $attributes['sexo'],
                     'grupoSanguineo' => 1,
                     'estadoCivil' => 2,
-                    'sexo' => strtolower($attributes['sexo']),
+                    'sexo' => $attributes['sexo'],
                     'incapacidad' => false,
                     'cronico' => false,
                     'celulares' => [
@@ -50,7 +50,7 @@ class  CrearPersona extends Controller
                             'emailGmail' => ''
                         ]
                     ],
-                    'email' => $attributes['email'] ?? '',
+                    'email' => $attributes['email'],
                     'observacion' => '',
                     'calle' => 'Calle',
                     'numero' => '123',
@@ -61,16 +61,16 @@ class  CrearPersona extends Controller
                     'partido' => null,
                     'provincia' => null,
                     'pais' => 1,
-                    'coberturaMedica'=> [
-                
-                    "ppd"=> "false",
-                    "obraSocialSelected"=> [
-                        "id"=> $attributes ['id'],
-                    ],
-                    /*"planSelected"=> [
-                        "id"=> 1,
-                    ]*/
-                
+                    'coberturaMedica' => [
+                        [
+                            "ppd" => "false",
+                            "obraSocialSelected" => [
+                                "id" => $attributes['obraSocialSelectedId']
+                            ],
+                            "planSelected" => [
+                                "id" => $attributes['planSelectedId']
+                            ]
+                        ]
                     ],
                     'notaAuditor' => '',
                     'empadronamiento' => null,

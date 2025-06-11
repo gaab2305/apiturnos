@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Persona;
 use App\Http\Controllers\Profesionales;
 use App\Http\Controllers\Turnos;
+use App\Http\Controllers\ListadoPlanes;
 
 
 Route::middleware('api.key')->group(function () {
@@ -22,4 +23,5 @@ Route::middleware('api.key')->group(function () {
     Route::get('/v1/turnos/{IDprofesional?}/{IDespecialidad?}', [Turnos::class, 'turno']);
     Route::post('/v1/crear/turno', [CrearTurno::class, 'nuevoturno']);
     Route::post('/v1/crear/persona', [CrearPersona::class, 'nuevapersona']);
+    route::get('/v1/Planes/{IDobraSocial}', [ListadoPlanes::class, 'planes']);
 });
