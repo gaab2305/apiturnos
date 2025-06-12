@@ -13,6 +13,7 @@ use App\Http\Controllers\Persona;
 use App\Http\Controllers\Profesionales;
 use App\Http\Controllers\Turnos;
 use App\Http\Controllers\ListadoPlanes;
+use App\Http\Controllers\CancelarTurnos;
 
 
 Route::middleware('api.key')->group(function () {
@@ -24,4 +25,5 @@ Route::middleware('api.key')->group(function () {
     Route::post('/v1/crear/turno', [CrearTurno::class, 'nuevoturno']);
     Route::post('/v1/crear/persona', [CrearPersona::class, 'nuevapersona']);
     route::get('/v1/Planes/{IDobraSocial}', [ListadoPlanes::class, 'planes']);
+    //Route::put('/v1/cancelarTurnos/{}' , [CancelarTurnos::class, 'cancelacion']);
 });

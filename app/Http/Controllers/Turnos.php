@@ -11,25 +11,26 @@ use Illuminate\Http\Controllers;
 
 class Turnos extends Controller
 {
-    public function turno ($IDprofesional, $IDespecialidad)
+    public function turno($IDprofesional, $IDespecialidad)
     {
         $fechaInicio = Carbon::now()->format('Y-m-d');
         $fechaFin = Carbon::now()->addDays(15)->format('Y-m-d');
 
         $response = Http::timeout(60)->withBasicAuth(env('usernamealephoo'), env('userpw'))
-        ->get('https://universitario.alephoo.com/api/v3/admision/turnos/disponibles?filter[profesionales]=' . $IDprofesional . '&filter[especialidades]=' . $IDespecialidad . '&filter[fechaInicio]=' . $fechaInicio . '&filter[fechaFin]=' . $fechaFin);
-    $data = $response->json();
-    $items = $data['data'] ?? []; // asumiendo que la clave es 'data'
-    $resultado = [];
+            ->get('https://universitario.alephoo.com/api/v3/admision/turnos/disponibles?filter[profesionales]=' . $IDprofesional . '&filter[especialidades]=' . $IDespecialidad . '&filter[fechaInicio]=' . $fechaInicio . '&filter[fechaFin]=' . $fechaFin);
+        $data = $response->json();
+        $items = $data['data'] ?? []; // asumiendo que la clave es 'data'
+        $resultado = [];
+        foreach ($items as $item) {
+            if ($item['attributes']['estaEnDiaNoHabil'] == false && $item['attributes']['estaEnHoraNoHabil'] == false) {
+                $resultado[] = [
+                    'hora' => $item['attributes']['hora'],
+                    'fecha' => $item['attributes']['fecha'],
+                    'agenda' => $item['relationships']['agenda']['data']['id'],
+                ];
+            }
+        }
 
-    foreach ($items as $item) {
-        $resultado[] = [
-            'hora' => $item['attributes']['hora'],
-            'fecha' => $item['attributes']['fecha'],
-            'agenda' => $item['relationships']['agenda']['data']['id']
-        ];
+        return response()->json($resultado);
     }
-
-    return response()->json($resultado);
-    }
-} 
+}
