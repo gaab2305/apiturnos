@@ -24,6 +24,6 @@ Route::middleware('api.key')->group(function () {
     Route::get('/v1/turnos/{IDprofesional?}/{IDespecialidad?}', [Turnos::class, 'turno']);
     Route::post('/v1/crear/turno', [CrearTurno::class, 'nuevoturno']);
     Route::post('/v1/crear/persona', [CrearPersona::class, 'nuevapersona']);
-    route::get('/v1/Planes/{IDobraSocial}', [ListadoPlanes::class, 'planes']);
-    //Route::put('/v1/cancelarTurnos/{}' , [CancelarTurnos::class, 'cancelacion']);
+    Route::get('/v1/planes/{IDobraSocial}', [ListadoPlanes::class, 'planes']);
+    Route::put('/v1/cancelarTurnos/{IDTurno}' , [CancelarTurnos::class, 'cambiarEstado']);
 });

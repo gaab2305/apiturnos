@@ -28,8 +28,8 @@ class Profesionales extends BaseController
         for ($i = 0; $i < $count; $i++) {
             $resultado[] = [
                 'id' => $data[$i]['id'],
-                'nombres' => $included[$i]['attributes']['nombres'] ?? '',
-                'apellidos' => $included[$i]['attributes']['apellidos'] ?? '',
+                'nombres' => strtoupper($included[$i]['attributes']['nombres'] ?? ''),
+                'apellidos' => strtoupper($included[$i]['attributes']['apellidos'] ?? ''),
             ];
         }
 
