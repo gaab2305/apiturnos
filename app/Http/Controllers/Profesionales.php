@@ -28,11 +28,18 @@ class Profesionales extends BaseController
         for ($i = 0; $i < $count; $i++) {
             $resultado[] = [
                 'id' => $data[$i]['id'],
-                'nombres' => strtoupper($included[$i]['attributes']['nombres'] ?? ''),
-                'apellidos' => strtoupper($included[$i]['attributes']['apellidos'] ?? ''),
+                'nombres' => $this->capitalizarNombres($included[$i]['attributes']['nombres'] ?? ''),
+                'apellidos' => $this->capitalizarNombres($included[$i]['attributes']['apellidos'] ?? ''),
             ];
         }
 
         return response()->json($resultado);
     }
+
+    private function capitalizarNombres($string)
+    {
+        $string = preg_replace('/[-_]+/', ' ', $string);
+        return ucwords(strtolower(trim($string)));
+    }
+
 }
