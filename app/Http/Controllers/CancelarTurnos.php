@@ -34,8 +34,11 @@ class CancelarTurnos extends Controller
         ];
         //dd($payload);
         // Enviar a la API REAL con autenticación básica
+        $key = base64_decode(env('TURNO_KEY'));
+    $iv  = base64_decode(env('TURNO_IV'));
+        $idturno = $this->decryptTurnoId($IDTurno, $key, $iv);
         $response = Http::timeout(60)->withBasicAuth(env('usernamealephoo'), env('userpw'))
-            ->put('https://universitario.alephoo.com/api/v3/admision/turnos/'.$IDTurno, $payload);
+            ->put('https://universitario.alephoo.com/api/v3/admision/turnos/'.$idturno, $payload);
 
         if ($response->successful()) {
             return response()->json([
@@ -49,4 +52,15 @@ class CancelarTurnos extends Controller
             'error' => $response->body()
         ], $response->status());
     }
+
+    private function decryptTurnoId($encrypted, $key, $iv)
+{
+    $decoded = $this->base64url_decode($encrypted);
+    return openssl_decrypt($decoded, 'AES-128-CBC', $key, OPENSSL_RAW_DATA, $iv);
+}
+    private function base64url_decode($data)
+{
+    $data .= str_repeat('=', 4 - (strlen($data) % 4)); // padding
+    return base64_decode(strtr($data, '-_', '+/'));
+}
 }
